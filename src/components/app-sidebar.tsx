@@ -2,6 +2,8 @@
 
 import { Bot, Home, List, Mic, Video } from "lucide-react";
 import * as React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { NavUser } from "@/components/nav-user";
 import {
@@ -29,33 +31,27 @@ const data = {
       title: "Overview",
       url: "/",
       icon: Home,
-      isActive: true,
     },
     {
       title: "Tasks",
       url: "/tasks",
       icon: List,
-      isActive: false,
     },
     {
       title: "Cameras",
-      url: "#",
+      url: "/cameras",
       icon: Video,
-      isActive: false,
     },
     {
       title: "Voice",
-      url: "#",
+      url: "/voice",
       icon: Mic,
-      isActive: false,
     },
   ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  // Note: I'm using state to show active item.
-  // IRL you should use the url/router.
-  const [activeItem, setActiveItem] = React.useState(data.navMain[0]);
+  const pathname = usePathname();
   const { setOpen } = useSidebar();
 
   return (
@@ -68,14 +64,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild className="md:h-8 md:p-0">
-              <a href="#">
+              <Link href="/">
                 <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
                   <Bot className="size-4" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">Homant</span>
                 </div>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -92,14 +88,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       hidden: false,
                     }}
                     onClick={() => {
-                      setActiveItem(item);
                       setOpen(true);
                     }}
-                    isActive={activeItem?.title === item.title}
+                    isActive={pathname === item.url}
                     className="px-2.5 md:px-2"
+                    asChild
                   >
-                    <item.icon />
-                    <span>{item.title}</span>
+                    <Link href={item.url}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
