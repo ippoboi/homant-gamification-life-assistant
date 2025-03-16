@@ -1,6 +1,6 @@
 "use client";
 
-import { Bot, Home, List, Mic, Video } from "lucide-react";
+import { Bot, Home, List, Mic, User, Video } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "./ui/breadcrumb";
 
@@ -20,6 +20,8 @@ export default function AppBreadcrumb() {
         return <Home className="w-4 h-4" />;
       case "/tasks":
         return <List className="w-4 h-4" />;
+      case "/profile":
+        return <User className="w-4 h-4" />;
       case "/cameras":
         return <Video className="w-4 h-4" />;
       case "/voice":

@@ -1,6 +1,6 @@
 "use client";
 
-import { Bot, Home, List, Mic, Video } from "lucide-react";
+import { Bot, Home, List, Mic, User, Video } from "lucide-react";
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -36,6 +36,11 @@ const data = {
       title: "Tasks",
       url: "/tasks",
       icon: List,
+    },
+    {
+      title: "Profile",
+      url: "/profile",
+      icon: User,
     },
     {
       title: "Cameras",

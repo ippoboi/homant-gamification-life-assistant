@@ -1,16 +1,10 @@
 "use client";
 
-import { GoalData, UserProfile } from "@/lib";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import {
-  MoreHorizontal,
-  Calendar,
-  CheckSquare,
-  Target,
-  Footprints,
-} from "lucide-react";
+import { GoalData, UserProfile } from "@/lib";
+import { Calendar, Footprints, MoreHorizontal, Target } from "lucide-react";
 import { Separator } from "./ui/separator";
 
 interface GoalsProps {
