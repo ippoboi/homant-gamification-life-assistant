@@ -15,38 +15,104 @@ import {
 import { useState } from "react";
 import { Task } from "@/components/Task";
 import { Habit } from "@/components/Habit";
-
-type TaskId = "task1" | "task2" | "task3" | "task4" | "task5";
-type HabitId = "habit1" | "habit2" | "habit3";
+import {
+  TaskData,
+  HabitData,
+  placeholderUser,
+  placeholderGoals,
+  getTodaysTasks,
+  getTodaysHabits,
+  toggleTaskCompletion,
+  toggleHabitCompletion,
+  getTasksCount,
+  getHabitsCount,
+  calculateLevelProgress,
+  updateUserStats,
+} from "@/lib";
 
 export default function Tasks() {
-  const [checkedTasks, setCheckedTasks] = useState({
-    task1: false,
-    task2: false,
-    task3: false,
-    task4: true,
-    task5: true,
-  });
+  // Initialize state with placeholder data
+  const [tasks, setTasks] = useState<TaskData[]>(getTodaysTasks());
+  const [habits, setHabits] = useState<HabitData[]>(getTodaysHabits());
+  const [user, setUser] = useState(placeholderUser);
+  const [goals] = useState(placeholderGoals);
 
-  const [completedHabits, setCompletedHabits] = useState({
-    habit1: false,
-    habit2: false,
-    habit3: true,
-  });
+  // Calculate task and habit counts
+  const taskCounts = getTasksCount(tasks);
+  const habitCounts = getHabitsCount(habits);
 
-  const handleCheckboxChange = (taskId: TaskId) => {
-    setCheckedTasks((prev) => ({
-      ...prev,
-      [taskId]: !prev[taskId],
-    }));
+  // Calculate level progress
+  const levelProgress = calculateLevelProgress(
+    user.currentExp,
+    user.expToNextLevel
+  );
+
+  // Handle task checkbox change
+  const handleTaskChange = (taskId: string) => {
+    const updatedTasks = toggleTaskCompletion(tasks, taskId);
+    setTasks(updatedTasks);
+
+    // Find the task that was toggled
+    const toggledTask = tasks.find((task) => task.id === taskId);
+    if (toggledTask) {
+      // If task was completed, add exp points to user
+      const wasCompleted = toggledTask.completed;
+      if (!wasCompleted) {
+        // Task was just completed, add exp
+        setUser((prev) => ({
+          ...prev,
+          currentExp: prev.currentExp + toggledTask.expPoints,
+        }));
+      } else {
+        // Task was uncompleted, remove exp
+        setUser((prev) => ({
+          ...prev,
+          currentExp: Math.max(0, prev.currentExp - toggledTask.expPoints),
+        }));
+      }
+    }
   };
 
-  const handleHabitComplete = (habitId: HabitId, completed: boolean) => {
-    setCompletedHabits((prev) => ({
-      ...prev,
-      [habitId]: completed,
-    }));
+  // Handle habit completion
+  const handleHabitComplete = (habitId: string, completed: boolean) => {
+    const updatedHabits = toggleHabitCompletion(habits, habitId);
+    setHabits(updatedHabits);
+
+    // Find the habit that was toggled
+    const toggledHabit = habits.find((habit) => habit.id === habitId);
+    if (toggledHabit) {
+      if (completed && !toggledHabit.completed) {
+        // Habit was just completed
+        // Add exp points to user
+        setUser((prev) => ({
+          ...prev,
+          currentExp: prev.currentExp + toggledHabit.expPoints,
+          // Update stats if habit has stat boosts
+          stats: updateUserStats(prev.stats, toggledHabit),
+        }));
+      } else if (!completed && toggledHabit.completed) {
+        // Habit was uncompleted
+        // Remove exp points from user
+        setUser((prev) => ({
+          ...prev,
+          currentExp: Math.max(0, prev.currentExp - toggledHabit.expPoints),
+          // Note: We don't remove stat boosts when uncompleting a habit
+        }));
+      }
+    }
   };
+
+  // Sort tasks - incomplete tasks first
+  const sortedTasks = [...tasks].sort((a, b) => {
+    if (a.completed === b.completed) return 0;
+    return a.completed ? 1 : -1;
+  });
+
+  // Sort habits - incomplete habits first
+  const sortedHabits = [...habits].sort((a, b) => {
+    if (a.completed === b.completed) return 0;
+    return a.completed ? 1 : -1;
+  });
 
   return (
     <div className="flex relative h-screen p-8">
@@ -57,11 +123,13 @@ export default function Tasks() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-medium">
-                Hello, <span className="text-muted-foreground">Dimitar.</span>
+                Hello,{" "}
+                <span className="text-muted-foreground">{user.name}.</span>
               </h1>
               <p className="text-muted-foreground mt-1">
                 You have currently{" "}
-                <span className="font-medium text-white">8</span> goals
+                <span className="font-medium text-white">{goals.length}</span>{" "}
+                goals
               </p>
             </div>
             <div className="flex items-center gap-4">
@@ -69,13 +137,13 @@ export default function Tasks() {
                 <div className="flex justify-between items-center w-full">
                   <div className="flex items-center gap-1">
                     <Star size={18} className="fill-primary text-primary" />
-                    <span className="font-medium">Level 8</span>
+                    <span className="font-medium">Level {user.level}</span>
                   </div>
                   <span className="text-sm text-muted-foreground">
-                    234/1230
+                    {user.currentExp}/{user.expToNextLevel}
                   </span>
                 </div>
-                <Progress value={18} className="h-2 w-[300px]" />
+                <Progress value={levelProgress} className="h-2 w-[300px]" />
               </div>
 
               {/* Sheet trigger button */}
@@ -100,7 +168,20 @@ export default function Tasks() {
                     <div>
                       <h3 className="font-medium mb-4">Goals deadlines</h3>
                       <div className="space-y-2">
-                        {/* Goal deadline items would go here */}
+                        {goals.map(
+                          (goal) =>
+                            goal.deadline && (
+                              <div
+                                key={goal.id}
+                                className="flex justify-between"
+                              >
+                                <span>{goal.name}</span>
+                                <span className="text-muted-foreground">
+                                  {goal.deadline.toLocaleDateString()}
+                                </span>
+                              </div>
+                            )
+                        )}
                       </div>
                     </div>
                   </div>
@@ -125,7 +206,10 @@ export default function Tasks() {
               <div className="flex flex-col">
                 <CardTitle className="text-xl">Today&apos;s Tasks</CardTitle>
                 <p className="text-muted-foreground text-sm">
-                  You have <span className="font-medium text-white">8</span>{" "}
+                  You have{" "}
+                  <span className="font-medium text-white">
+                    {taskCounts.total}
+                  </span>{" "}
                   tasks today
                 </p>
               </div>
@@ -137,54 +221,18 @@ export default function Tasks() {
             <CardContent>
               {/* Task items */}
               <div className="space-y-4 bg-secondary rounded-md p-4">
-                {/* Task 1 */}
-                <Task
-                  id="task1"
-                  title="Task #1"
-                  goalName="Goal #1"
-                  expPoints={32}
-                  checked={checkedTasks.task1}
-                  onCheckedChange={() => handleCheckboxChange("task1")}
-                />
-
-                {/* Task 2 */}
-                <Task
-                  id="task2"
-                  title="Task #1"
-                  expPoints={32}
-                  checked={checkedTasks.task2}
-                  onCheckedChange={() => handleCheckboxChange("task2")}
-                />
-
-                {/* Task 3 */}
-                <Task
-                  id="task3"
-                  title="Task #1"
-                  goalName="Goal #1"
-                  expPoints={32}
-                  checked={checkedTasks.task3}
-                  onCheckedChange={() => handleCheckboxChange("task3")}
-                />
-
-                {/* Task 4 */}
-                <Task
-                  id="task4"
-                  title="Task #1"
-                  goalName="Goal #1"
-                  expPoints={32}
-                  checked={checkedTasks.task4}
-                  onCheckedChange={() => handleCheckboxChange("task4")}
-                />
-
-                {/* Task 5 */}
-                <Task
-                  id="task5"
-                  title="Task #1"
-                  goalName="Goal #1"
-                  expPoints={32}
-                  checked={checkedTasks.task5}
-                  onCheckedChange={() => handleCheckboxChange("task5")}
-                />
+                {sortedTasks.map((task, index) => (
+                  <Task
+                    key={task.id}
+                    id={task.id}
+                    title={task.title}
+                    goalName={task.goalName}
+                    expPoints={task.expPoints}
+                    checked={task.completed}
+                    onCheckedChange={() => handleTaskChange(task.id)}
+                    isLast={index === sortedTasks.length - 1}
+                  />
+                ))}
               </div>
             </CardContent>
           </Card>
@@ -194,61 +242,29 @@ export default function Tasks() {
             <CardHeader className="pb-2">
               <CardTitle className="text-xl">Today&apos;s Habits</CardTitle>
               <p className="text-muted-foreground text-sm">
-                You have <span className="font-medium text-white">3</span>{" "}
+                You have{" "}
+                <span className="font-medium text-white">
+                  {habitCounts.total}
+                </span>{" "}
                 habits today
               </p>
             </CardHeader>
             <CardContent className="space-y-4">
-              {/* Habit 1 */}
-              <Habit
-                id="habit1"
-                title="Habit #1"
-                description="This is a description for the habit"
-                goalName="Goal #1"
-                expPoints={32}
-                statBoosts={[
-                  { type: "STR", value: 3 },
-                  { type: "AGL", value: 3 },
-                ]}
-                completed={completedHabits.habit1}
-                onComplete={(id, completed) =>
-                  handleHabitComplete(id as HabitId, completed)
-                }
-              />
-
-              {/* Habit 2 */}
-              <Habit
-                id="habit2"
-                title="Habit #2"
-                description="This is a description for the habit"
-                goalName="Goal #1"
-                expPoints={32}
-                statBoosts={[
-                  { type: "VIT", value: 3 },
-                  { type: "SPE", value: 3 },
-                ]}
-                completed={completedHabits.habit2}
-                onComplete={(id, completed) =>
-                  handleHabitComplete(id as HabitId, completed)
-                }
-              />
-
-              {/* Habit 3 */}
-              <Habit
-                id="habit3"
-                title="Habit #3"
-                description="This is a description for the habit"
-                goalName="Goal #1"
-                expPoints={32}
-                statBoosts={[
-                  { type: "INT", value: 3 },
-                  { type: "STR", value: 2 },
-                ]}
-                completed={completedHabits.habit3}
-                onComplete={(id, completed) =>
-                  handleHabitComplete(id as HabitId, completed)
-                }
-              />
+              {sortedHabits.map((habit) => (
+                <Habit
+                  key={habit.id}
+                  id={habit.id}
+                  title={habit.title}
+                  description={habit.description}
+                  goalName={habit.goalName}
+                  expPoints={habit.expPoints}
+                  statBoosts={habit.statBoosts}
+                  completed={habit.completed}
+                  onComplete={(id, completed) =>
+                    handleHabitComplete(id, completed)
+                  }
+                />
+              ))}
             </CardContent>
           </Card>
         </div>

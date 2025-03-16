@@ -8,6 +8,7 @@ interface TaskProps {
   expPoints: number;
   checked: boolean;
   onCheckedChange: (checked: boolean) => void;
+  isLast?: boolean;
 }
 
 export function Task({
@@ -17,6 +18,7 @@ export function Task({
   expPoints,
   checked,
   onCheckedChange,
+  isLast = false,
 }: TaskProps) {
   return (
     <>
@@ -46,7 +48,7 @@ export function Task({
           <span className="text-sm">+ {expPoints} Exp</span>
         </div>
       </div>
-      <Separator className="bg-[#25272C]" />
+      {!isLast && <Separator className="bg-[#25272C]" />}
     </>
   );
 }
