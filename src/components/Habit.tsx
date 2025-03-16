@@ -20,9 +20,9 @@ interface StatConfig {
 const STAT_CONFIG: Record<StatType, StatConfig> = {
   STR: { color: "#FF2020", icon: BodyPartMuscleIcon },
   VIT: { color: "#34FF7B", icon: HealthIcon },
-  AGL: { color: "#0033EC", icon: WorkoutKickingIcon },
+  AGL: { color: "#0F7BFF", icon: WorkoutKickingIcon },
   SPE: { color: "#C4EC00", icon: ZapIcon },
-  INT: { color: "#A500EC", icon: Brain01Icon },
+  INT: { color: "#DD1AFF", icon: Brain01Icon },
 };
 
 // Define the stat boost interface

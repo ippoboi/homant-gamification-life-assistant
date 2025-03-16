@@ -36,7 +36,7 @@ export default function Tasks() {
   return (
     <div className="flex relative h-screen p-8">
       {/* Main content */}
-      <div className="flex-1 space-y-4">
+      <div className="flex-1 space-y-8">
         {/* Header with user info and level */}
         <div>
           <div className="flex items-center justify-between">
@@ -114,18 +114,21 @@ export default function Tasks() {
           <Button
             variant={activeTab === "daily" ? "default" : "ghost"}
             onClick={() => setActiveTab("daily")}
+            className="cursor-pointer"
           >
             Daily tasks
           </Button>
           <Button
             variant={activeTab === "backlog" ? "default" : "ghost"}
             onClick={() => setActiveTab("backlog")}
+            className="cursor-pointer"
           >
             Backlog
           </Button>
           <Button
             variant={activeTab === "goals" ? "default" : "ghost"}
             onClick={() => setActiveTab("goals")}
+            className="cursor-pointer"
           >
             Goals
           </Button>
