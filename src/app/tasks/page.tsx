@@ -1,10 +1,17 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState } from "react";
+import { DailyTasks } from "@/components/DailyTasks";
+import { Goals } from "@/components/Goals";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { Star, Menu } from "lucide-react";
+import { Menu, Star } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import {
+  placeholderUser,
+  placeholderGoals,
+  calculateLevelProgress,
+} from "@/lib";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Sheet,
   SheetContent,
@@ -12,107 +19,19 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { useState } from "react";
-import { Task } from "@/components/Task";
-import { Habit } from "@/components/Habit";
-import {
-  TaskData,
-  HabitData,
-  placeholderUser,
-  placeholderGoals,
-  getTodaysTasks,
-  getTodaysHabits,
-  toggleTaskCompletion,
-  toggleHabitCompletion,
-  getTasksCount,
-  getHabitsCount,
-  calculateLevelProgress,
-  updateUserStats,
-} from "@/lib";
 
 export default function Tasks() {
-  // Initialize state with placeholder data
-  const [tasks, setTasks] = useState<TaskData[]>(getTodaysTasks());
-  const [habits, setHabits] = useState<HabitData[]>(getTodaysHabits());
-  const [user, setUser] = useState(placeholderUser);
+  const [activeTab, setActiveTab] = useState<"daily" | "backlog" | "goals">(
+    "daily"
+  );
+  const [user] = useState(placeholderUser);
   const [goals] = useState(placeholderGoals);
-
-  // Calculate task and habit counts
-  const taskCounts = getTasksCount(tasks);
-  const habitCounts = getHabitsCount(habits);
 
   // Calculate level progress
   const levelProgress = calculateLevelProgress(
     user.currentExp,
     user.expToNextLevel
   );
-
-  // Handle task checkbox change
-  const handleTaskChange = (taskId: string) => {
-    const updatedTasks = toggleTaskCompletion(tasks, taskId);
-    setTasks(updatedTasks);
-
-    // Find the task that was toggled
-    const toggledTask = tasks.find((task) => task.id === taskId);
-    if (toggledTask) {
-      // If task was completed, add exp points to user
-      const wasCompleted = toggledTask.completed;
-      if (!wasCompleted) {
-        // Task was just completed, add exp
-        setUser((prev) => ({
-          ...prev,
-          currentExp: prev.currentExp + toggledTask.expPoints,
-        }));
-      } else {
-        // Task was uncompleted, remove exp
-        setUser((prev) => ({
-          ...prev,
-          currentExp: Math.max(0, prev.currentExp - toggledTask.expPoints),
-        }));
-      }
-    }
-  };
-
-  // Handle habit completion
-  const handleHabitComplete = (habitId: string, completed: boolean) => {
-    const updatedHabits = toggleHabitCompletion(habits, habitId);
-    setHabits(updatedHabits);
-
-    // Find the habit that was toggled
-    const toggledHabit = habits.find((habit) => habit.id === habitId);
-    if (toggledHabit) {
-      if (completed && !toggledHabit.completed) {
-        // Habit was just completed
-        // Add exp points to user
-        setUser((prev) => ({
-          ...prev,
-          currentExp: prev.currentExp + toggledHabit.expPoints,
-          // Update stats if habit has stat boosts
-          stats: updateUserStats(prev.stats, toggledHabit),
-        }));
-      } else if (!completed && toggledHabit.completed) {
-        // Habit was uncompleted
-        // Remove exp points from user
-        setUser((prev) => ({
-          ...prev,
-          currentExp: Math.max(0, prev.currentExp - toggledHabit.expPoints),
-          // Note: We don't remove stat boosts when uncompleting a habit
-        }));
-      }
-    }
-  };
-
-  // Sort tasks - incomplete tasks first
-  const sortedTasks = [...tasks].sort((a, b) => {
-    if (a.completed === b.completed) return 0;
-    return a.completed ? 1 : -1;
-  });
-
-  // Sort habits - incomplete habits first
-  const sortedHabits = [...habits].sort((a, b) => {
-    if (a.completed === b.completed) return 0;
-    return a.completed ? 1 : -1;
-  });
 
   return (
     <div className="flex relative h-screen p-8">
@@ -145,7 +64,6 @@ export default function Tasks() {
                 </div>
                 <Progress value={levelProgress} className="h-2 w-[300px]" />
               </div>
-
               {/* Sheet trigger button */}
               <Sheet>
                 <SheetTrigger asChild>
@@ -189,85 +107,41 @@ export default function Tasks() {
               </Sheet>
             </div>
           </div>
+        </div>
 
-          {/* Navigation tabs */}
-          <div className="mt-4 flex space-x-4">
-            <Button variant="ghost">Daily tasks</Button>
-            <Button variant="ghost">Backlog</Button>
-            <Button variant="ghost">Goals</Button>
+        {/* Navigation tabs */}
+        <div className="flex space-x-4">
+          <Button
+            variant={activeTab === "daily" ? "default" : "ghost"}
+            onClick={() => setActiveTab("daily")}
+          >
+            Daily tasks
+          </Button>
+          <Button
+            variant={activeTab === "backlog" ? "default" : "ghost"}
+            onClick={() => setActiveTab("backlog")}
+          >
+            Backlog
+          </Button>
+          <Button
+            variant={activeTab === "goals" ? "default" : "ghost"}
+            onClick={() => setActiveTab("goals")}
+          >
+            Goals
+          </Button>
+        </div>
+
+        {/* Content based on active tab */}
+        {activeTab === "daily" && <DailyTasks user={user} goals={goals} />}
+        {activeTab === "backlog" && (
+          <div className="p-8 bg-card rounded-lg border border-border">
+            <h2 className="text-xl font-semibold mb-4">Backlog</h2>
+            <p className="text-muted-foreground">
+              Backlog content will be implemented here.
+            </p>
           </div>
-        </div>
-
-        {/* Main content area with tasks and habits */}
-        <div className="grid grid-cols-2 gap-6">
-          {/* Today's Tasks */}
-          <Card className="bg-card border-border space-y-8">
-            <CardHeader className="flex justify-between items-center">
-              <div className="flex flex-col">
-                <CardTitle className="text-xl">Today&apos;s Tasks</CardTitle>
-                <p className="text-muted-foreground text-sm">
-                  You have{" "}
-                  <span className="font-medium text-white">
-                    {taskCounts.total}
-                  </span>{" "}
-                  tasks today
-                </p>
-              </div>
-
-              <Button variant="outline" className="text-sm">
-                Add task
-              </Button>
-            </CardHeader>
-            <CardContent>
-              {/* Task items */}
-              <div className="space-y-4 bg-secondary rounded-md p-4">
-                {sortedTasks.map((task, index) => (
-                  <Task
-                    key={task.id}
-                    id={task.id}
-                    title={task.title}
-                    goalName={task.goalName}
-                    expPoints={task.expPoints}
-                    checked={task.completed}
-                    onCheckedChange={() => handleTaskChange(task.id)}
-                    isLast={index === sortedTasks.length - 1}
-                  />
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Today's Habits */}
-          <Card className="bg-card border-border space-y-6">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-xl">Today&apos;s Habits</CardTitle>
-              <p className="text-muted-foreground text-sm">
-                You have{" "}
-                <span className="font-medium text-white">
-                  {habitCounts.total}
-                </span>{" "}
-                habits today
-              </p>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {sortedHabits.map((habit) => (
-                <Habit
-                  key={habit.id}
-                  id={habit.id}
-                  title={habit.title}
-                  description={habit.description}
-                  goalName={habit.goalName}
-                  expPoints={habit.expPoints}
-                  statBoosts={habit.statBoosts}
-                  completed={habit.completed}
-                  onComplete={(id, completed) =>
-                    handleHabitComplete(id, completed)
-                  }
-                />
-              ))}
-            </CardContent>
-          </Card>
-        </div>
+        )}
+        {activeTab === "goals" && <Goals goals={goals} />}
       </div>
     </div>
   );
