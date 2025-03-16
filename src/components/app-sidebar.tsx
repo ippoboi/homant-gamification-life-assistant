@@ -22,34 +22,34 @@ import {
 // This is sample data
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
+    name: "Dimitar",
+    email: "dimitar@homant.com",
     avatar: "/avatars/shadcn.jpg",
   },
   navMain: [
     {
       title: "Overview",
-      url: "/",
+      url: "/dashboard/overview",
       icon: Home,
     },
     {
       title: "Tasks",
-      url: "/tasks",
+      url: "/dashboard/tasks",
       icon: List,
     },
     {
       title: "Profile",
-      url: "/profile",
+      url: "/dashboard/profile",
       icon: User,
     },
     {
       title: "Cameras",
-      url: "/cameras",
+      url: "/dashboard/cameras",
       icon: Video,
     },
     {
       title: "Voice",
-      url: "/voice",
+      url: "/dashboard/voice",
       icon: Mic,
     },
   ],

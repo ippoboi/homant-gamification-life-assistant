@@ -42,8 +42,8 @@ export default function AppBreadcrumb() {
                 <div className="p-2 rounded-md bg-muted">
                   {getIconForPathname()}
                 </div>
-                {pathnameParts[0]
-                  ? capitalizeFirstLetter(pathnameParts[0])
+                {pathnameParts[1]
+                  ? capitalizeFirstLetter(pathnameParts[1])
                   : pathname === "/"
                   ? "Overview"
                   : ""}
