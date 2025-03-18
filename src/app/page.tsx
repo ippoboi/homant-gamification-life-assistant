@@ -1,58 +1,67 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
 // Header Component
 const Header = () => (
-  <header className="fixed w-full top-0 z-50 bg-zinc-900/80 backdrop-blur-sm border-b border-zinc-800">
+  <header className="fixed w-full top-0 z-50 bg-[#0A0A0A]/80 backdrop-blur-sm border-zinc-800">
     <div className="container mx-auto px-4 py-4">
       <div className="flex items-center justify-between">
-        <div className="flex items-center">
+        <div className="flex items-center gap-3">
+          <Image
+            src="/images/homant-logo.svg"
+            alt="Homant"
+            width={24}
+            height={24}
+          />
           <Link
             href="#"
-            className="text-2xl font-bold text-white hover:text-zinc-200 transition"
+            className="text-lg font-mono text-white hover:text-zinc-200 transition"
           >
-            Homant
+            Homant.
           </Link>
         </div>
         <nav className="hidden md:flex space-x-8">
           <Link
+            href="#why"
+            className="font-mono text-muted-foreground text-sm hover:text-white transition-all duration-200"
+          >
+            Why us
+          </Link>
+          <Link
+            href="#benefits"
+            className="font-mono text-muted-foreground text-sm hover:text-white transition-all duration-200"
+          >
+            Benefits
+          </Link>
+          <Link
             href="#features"
-            className="text-zinc-400 hover:text-white transition"
+            className="font-mono text-muted-foreground text-sm hover:text-white transition-all duration-200"
           >
             Features
           </Link>
           <Link
-            href="#why"
-            className="text-zinc-400 hover:text-white transition"
+            href="#clients"
+            className="font-mono text-muted-foreground text-sm hover:text-white transition-all duration-200"
           >
-            Why Homant
-          </Link>
-          <Link
-            href="#testimonials"
-            className="text-zinc-400 hover:text-white transition"
-          >
-            Testimonials
+            Clients
           </Link>
           <Link
             href="#faq"
-            className="text-zinc-400 hover:text-white transition"
+            className="font-mono text-muted-foreground text-sm hover:text-white transition-all duration-200"
           >
-            FAQ
+            FAQs
           </Link>
         </nav>
-        <div className="flex items-center space-x-4">
-          <Link
-            href="/login"
-            className="px-4 py-2 text-zinc-300 hover:text-white transition"
-          >
-            Sign In
-          </Link>
-          <button className="px-4 py-2 bg-white text-zinc-900 rounded-md hover:bg-zinc-200 transition">
-            Get Started
-          </button>
-        </div>
+
+        <Link
+          href="/login"
+          className="px-3 py-1.5 text-white transition bg-zinc-600 rounded-md"
+        >
+          Sign In
+        </Link>
       </div>
     </div>
   </header>
@@ -60,26 +69,49 @@ const Header = () => (
 
 // Hero Section
 const Hero = () => (
-  <section className="pt-32 pb-24 relative bg-zinc-900">
-    <div className="absolute inset-0 bg-[url(/grid.svg)] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
+  <section className="pt-48 pb-24 relative">
     <div className="container mx-auto px-4 relative">
-      <div className="max-w-3xl mx-auto text-center">
-        <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-          Your Home, Now Your Personal Life Coach
+      <div className="relative max-w-3xl mx-auto text-center">
+        <div className="absolute top-0 -left-10">
+          <Image
+            src="/images/plus-hero.svg"
+            alt="Homant"
+            width={56}
+            height={56}
+          />
+        </div>
+        <h1 className="text-4xl md:text-5xl font-mono font-semibold text-white mb-6">
+          A home assistant that gamifies your life.
         </h1>
-        <p className="text-xl text-zinc-400 mb-10">
-          Homant transforms your living space into an intelligent companion that
-          understands your mood, optimizes your routine, and turns everyday
-          tasks into rewarding achievements.
+        <p className="font-mono text-muted-foreground mb-10">
+          Transform your living space into an intelligent companion that helps
+          you crush your goals, optimize your routine, and make everyday life
+          more rewarding.
         </p>
+        <div className="absolute top-0 -right-10">
+          <Image
+            src="/images/stars-hero.svg"
+            alt="Homant"
+            width={56}
+            height={56}
+          />
+        </div>
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <button className="px-4 py-2 bg-white text-zinc-900 rounded-md hover:bg-zinc-200 font-medium transition">
-            Get Started Free
+            Get Started
           </button>
           <button className="px-4 py-2 border border-zinc-700 text-white rounded-md hover:bg-zinc-800 font-medium transition">
-            Book a Demo
+            Watch demo
           </button>
         </div>
+      </div>
+      <div className="flex items-center justify-center">
+        <Image
+          src="/images/hero-image.svg"
+          alt="Hero"
+          width={1000}
+          height={1000}
+        />
       </div>
     </div>
   </section>
@@ -675,7 +707,7 @@ const Footer = () => (
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-zinc-900 text-white">
+    <div className="min-h-screen bg-[#0A0A0A] text-white">
       <Header />
       <main>
         <Hero />
