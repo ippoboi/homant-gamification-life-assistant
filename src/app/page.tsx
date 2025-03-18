@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { FerrisWheel } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -57,12 +58,20 @@ const Header = () => (
           </Link>
         </nav>
 
-        <Link
-          href="/login"
-          className="px-3 py-1.5 text-white transition bg-zinc-600 rounded-md"
-        >
-          Sign In
-        </Link>
+        <div className="flex items-center gap-4">
+          <Link
+            href="/auth/signin"
+            className="px-3 py-1.5 text-muted-foreground hover:text-white transition"
+          >
+            Sign in
+          </Link>
+          <Link
+            href="/auth/signup"
+            className="px-3 py-1.5 text-black transition bg-white rounded-md"
+          >
+            Sign up
+          </Link>
+        </div>
       </div>
     </div>
   </header>
@@ -129,17 +138,16 @@ const WhyHomant = () => (
         <h2 className="text-2xl font-bold text-white mb-2">Why us</h2>
         <p className="text-zinc-400">Not Just Another Smart Home System</p>
       </div>
-      <div className="grid md:grid-cols-3 gap-8">
-        <div className="p-4 space-y-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div className="space-y-8">
           <Image
-            src="/images/why-us-1.png"
+            src="/images/why-us-1.svg"
             alt="Smart Home"
             width={403}
             height={187}
           />
-
           <div className="space-y-8">
-            <h3 className="text-xl font-semibold text-white mb-3">
+            <h3 className="text-lg font-semibold text-white mb-3">
               Smart Homes React. Homant Anticipates.
             </h3>
             <p className="text-zinc-400">
@@ -148,16 +156,15 @@ const WhyHomant = () => (
             </p>
           </div>
         </div>
-        <div className="p-4 space-y-8">
+        <div className="space-y-8">
           <Image
-            src="/images/why-us-2.png"
+            src="/images/why-us-2.svg"
             alt="Smart Home"
             width={403}
             height={187}
           />
-
           <div className="space-y-8">
-            <h3 className="text-xl font-semibold text-white mb-3">
+            <h3 className="text-lg font-semibold text-white mb-3">
               Growth Through Gamification.
             </h3>
             <p className="text-zinc-400">
@@ -166,16 +173,15 @@ const WhyHomant = () => (
             </p>
           </div>
         </div>
-        <div className="p-4 space-y-8">
+        <div className="space-y-8">
           <Image
-            src="/images/why-us-3.png"
+            src="/images/why-us-3.svg"
             alt="Smart Home"
             width={403}
             height={187}
           />
-
           <div className="space-y-8">
-            <h3 className="text-xl font-semibold text-white mb-3">
+            <h3 className="text-lg font-semibold text-white mb-3">
               Emotion-Driven Intelligence.
             </h3>
             <p className="text-zinc-400">
@@ -190,127 +196,69 @@ const WhyHomant = () => (
   </section>
 );
 
-// Features Section
-const Features = () => (
-  <section id="features" className="py-24 bg-zinc-900">
+// Benefits Section
+const Benefits = () => (
+  <section id="benefits" className="py-24 bg-zinc-950">
     <div className="container mx-auto px-4">
-      <div className="max-w-3xl mx-auto text-center mb-16">
-        <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-          Key Features
-        </h2>
-        <p className="text-xl text-zinc-400">
-          Discover how Homant transforms your living space into an intelligent
-          companion.
-        </p>
+      <div className="max-w-3xl mb-16">
+        <h2 className="text-2xl font-bold text-white mb-2">Benefits</h2>
+        <p className="text-zinc-400">Experience Life on a New Level</p>
       </div>
-      <div className="grid md:grid-cols-2 gap-12">
-        <div className="flex flex-col md:flex-row gap-6">
-          <div className="w-12 h-12 bg-zinc-800 rounded-lg flex items-center justify-center flex-shrink-0">
-            <svg
-              className="w-6 h-6 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          </div>
-          <div>
-            <h3 className="text-xl font-semibold text-white mb-3">
-              Mood Detection
-            </h3>
-            <p className="text-zinc-400">
-              Advanced sensors detect your mood and automatically adjust
-              lighting, music, and temperature to help you feel your best.
-            </p>
-          </div>
+      <div className="grid grid-cols-1 md:grid-cols-3">
+        <div className="space-y-8 hover:bg-[#0F0F0F] transition-all duration-200 p-6">
+          <FerrisWheel className="w-10 h-10 text-white" strokeWidth={1.5} />
+          <h3 className="text-lg font-semibold text-white mb-3">
+            Stress-Free Living
+          </h3>
+          <p className="text-zinc-400">
+            Homant detects when you&apos;re stressed and automatically adjusts
+            lighting, music, and climate to create your ideal calming
+            environment.
+          </p>
         </div>
-        <div className="flex flex-col md:flex-row gap-6">
-          <div className="w-12 h-12 bg-zinc-800 rounded-lg flex items-center justify-center flex-shrink-0">
-            <svg
-              className="w-6 h-6 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
-              />
-            </svg>
-          </div>
-          <div>
-            <h3 className="text-xl font-semibold text-white mb-3">
-              Goal Tracking
-            </h3>
-            <p className="text-zinc-400">
-              Set personal goals and let Homant track your progress, offering
-              encouragement and creating the perfect environment for success.
-            </p>
-          </div>
+
+        <div className="space-y-8 hover:bg-[#0F0F0F] transition-all duration-200 p-6">
+          <FerrisWheel className="w-10 h-10 text-white" strokeWidth={1.5} />
+          <h3 className="text-lg font-semibold text-white mb-3">
+            Peak Productivity
+          </h3>
+          <p className="text-zinc-400">
+            Running late on a deadline? Your home transforms into a
+            distraction-free workspace optimized for focus and efficiency.
+          </p>
         </div>
-        <div className="flex flex-col md:flex-row gap-6">
-          <div className="w-12 h-12 bg-zinc-800 rounded-lg flex items-center justify-center flex-shrink-0">
-            <svg
-              className="w-6 h-6 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          </div>
-          <div>
-            <h3 className="text-xl font-semibold text-white mb-3">
-              Rewards System
-            </h3>
-            <p className="text-zinc-400">
-              Complete tasks and goals to earn rewards that unlock new home
-              automation features and personalization options.
-            </p>
-          </div>
+
+        <div className="space-y-8 hover:bg-[#0F0F0F] transition-all duration-200 p-6">
+          <FerrisWheel className="w-10 h-10 text-white" strokeWidth={1.5} />
+          <h3 className="text-lg font-semibold text-white mb-3">
+            Healthier Habits
+          </h3>
+          <p className="text-zinc-400">
+            From morning routines to workout reminders, Homant nudges you toward
+            better habits while making them easier to maintain.
+          </p>
         </div>
-        <div className="flex flex-col md:flex-row gap-6">
-          <div className="w-12 h-12 bg-zinc-800 rounded-lg flex items-center justify-center flex-shrink-0">
-            <svg
-              className="w-6 h-6 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-              />
-            </svg>
-          </div>
-          <div>
-            <h3 className="text-xl font-semibold text-white mb-3">
-              Smart Notifications
-            </h3>
-            <p className="text-zinc-400">
-              Receive contextual notifications that help you stay on track with
-              your goals without being intrusive or disruptive.
-            </p>
-          </div>
+
+        <div className="space-y-8 hover:bg-[#0F0F0F] transition-all duration-200 p-6">
+          <FerrisWheel className="w-10 h-10 text-white" strokeWidth={1.5} />
+          <h3 className="text-lg font-semibold text-white mb-3">
+            Family Connection
+          </h3>
+          <p className="text-zinc-400">
+            Create shared experiences and goals for the whole family, turning
+            quality time into meaningful moments that strengthen bonds.
+          </p>
+        </div>
+
+        <div className="space-y-8 hover:bg-[#0F0F0F] transition-all duration-200 p-6">
+          <FerrisWheel className="w-10 h-10 text-white" strokeWidth={1.5} />
+          <h3 className="text-lg font-semibold text-white mb-3">
+            Energy Efficiency
+          </h3>
+          <p className="text-zinc-400">
+            Save on utility bills while reducing your carbon footprint—HomeAI
+            optimizes energy usage without sacrificing comfort.
+          </p>
         </div>
       </div>
     </div>
@@ -319,24 +267,30 @@ const Features = () => (
 
 // CTA Section
 const CTASection = () => (
-  <section className="py-24 bg-zinc-950 border-t border-zinc-800">
+  <section className="py-24 bg-zinc-950">
     <div className="container mx-auto px-4">
-      <div className="max-w-4xl mx-auto text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-          Transform Your Home Into Your Personal Coach
+      <div className="max-w-4xl mx-auto text-center space-y-8">
+        <h2 className="text-2xl font-bold text-white mb-2">
+          Ready to Experience the Future of Smart Living?
         </h2>
-        <p className="text-xl text-zinc-400 mb-10">
-          Experience a home that doesn&apos;t just serve you - it helps you
-          thrive.
+        <p className="text-muted-foreground">
+          Homant works with your existing smart devices and starts at just
+          $XX/month
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <button className="px-8 py-4 bg-white text-zinc-900 rounded-md hover:bg-zinc-200 font-medium transition">
-            Get Started Free
-          </button>
-          <button className="px-8 py-4 border border-zinc-700 text-white rounded-md hover:bg-zinc-800 font-medium transition">
-            Book a Demo
-          </button>
+          <Button className="font-mono bg-white text-zinc-900">
+            Get Started
+          </Button>
+          <Button
+            variant="outline"
+            className="font-mono border border-zinc-700 text-white"
+          >
+            Watch demo
+          </Button>
         </div>
+        <p className="text-muted-foreground text-sm">
+          *No credit card required. Cancel anytime.*
+        </p>
       </div>
     </div>
   </section>
@@ -691,7 +645,7 @@ export default function Home() {
       <main>
         <Hero />
         <WhyHomant />
-        <Features />
+        <Benefits />
         <CTASection />
         <Testimonials />
         <FAQ />
