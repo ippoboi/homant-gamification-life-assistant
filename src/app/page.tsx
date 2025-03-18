@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -69,7 +70,7 @@ const Header = () => (
 
 // Hero Section
 const Hero = () => (
-  <section className="pt-48 pb-24 relative">
+  <section className="pt-48 pb-16 relative">
     <div className="container mx-auto px-4 relative">
       <div className="relative max-w-3xl mx-auto text-center">
         <div className="absolute top-0 -left-10">
@@ -97,12 +98,15 @@ const Hero = () => (
           />
         </div>
         <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <button className="px-4 py-2 bg-white text-zinc-900 rounded-md hover:bg-zinc-200 font-medium transition">
+          <Button className="font-mono bg-white text-zinc-900">
             Get Started
-          </button>
-          <button className="px-4 py-2 border border-zinc-700 text-white rounded-md hover:bg-zinc-800 font-medium transition">
+          </Button>
+          <Button
+            variant="outline"
+            className="font-mono border border-zinc-700 text-white"
+          >
             Watch demo
-          </button>
+          </Button>
         </div>
       </div>
       <div className="flex items-center justify-center">
@@ -121,90 +125,65 @@ const Hero = () => (
 const WhyHomant = () => (
   <section id="why" className="py-24 bg-zinc-950">
     <div className="container mx-auto px-4">
-      <div className="max-w-3xl mx-auto text-center mb-16">
-        <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-          Why Homant
-        </h2>
-        <p className="text-xl text-zinc-400">
-          Unlike standard smart homes that just follow commands, Homant learns
-          from you and adapts to your lifestyle.
-        </p>
+      <div className="max-w-3xl mb-16">
+        <h2 className="text-2xl font-bold text-white mb-2">Why us</h2>
+        <p className="text-zinc-400">Not Just Another Smart Home System</p>
       </div>
       <div className="grid md:grid-cols-3 gap-8">
-        <div className="bg-zinc-900 p-8 rounded-xl border border-zinc-800">
-          <div className="w-12 h-12 bg-zinc-800 rounded-lg flex items-center justify-center mb-6">
-            <svg
-              className="w-6 h-6 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M13 10V3L4 14h7v7l9-11h-7z"
-              />
-            </svg>
+        <div className="p-4 space-y-8">
+          <Image
+            src="/images/why-us-1.png"
+            alt="Smart Home"
+            width={403}
+            height={187}
+          />
+
+          <div className="space-y-8">
+            <h3 className="text-xl font-semibold text-white mb-3">
+              Smart Homes React. Homant Anticipates.
+            </h3>
+            <p className="text-zinc-400">
+              Homant learns your patterns, anticipates your needs, and creates
+              environments that help you thrive
+            </p>
           </div>
-          <h3 className="text-xl font-semibold text-white mb-3">
-            Emotion-Aware AI
-          </h3>
-          <p className="text-zinc-400">
-            Homant understands your mood and adjusts your environment
-            automatically to help you feel your best.
-          </p>
         </div>
-        <div className="bg-zinc-900 p-8 rounded-xl border border-zinc-800">
-          <div className="w-12 h-12 bg-zinc-800 rounded-lg flex items-center justify-center mb-6">
-            <svg
-              className="w-6 h-6 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-              />
-            </svg>
+        <div className="p-4 space-y-8">
+          <Image
+            src="/images/why-us-2.png"
+            alt="Smart Home"
+            width={403}
+            height={187}
+          />
+
+          <div className="space-y-8">
+            <h3 className="text-xl font-semibold text-white mb-3">
+              Growth Through Gamification.
+            </h3>
+            <p className="text-zinc-400">
+              Turn personal development into an engaging journey with
+              achievement-based rewards and leveling system
+            </p>
           </div>
-          <h3 className="text-xl font-semibold text-white mb-3">
-            Existing Device Compatibility
-          </h3>
-          <p className="text-zinc-400">
-            Works with your existing smart home devices, no need to replace your
-            current setup.
-          </p>
         </div>
-        <div className="bg-zinc-900 p-8 rounded-xl border border-zinc-800">
-          <div className="w-12 h-12 bg-zinc-800 rounded-lg flex items-center justify-center mb-6">
-            <svg
-              className="w-6 h-6 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
+        <div className="p-4 space-y-8">
+          <Image
+            src="/images/why-us-3.png"
+            alt="Smart Home"
+            width={403}
+            height={187}
+          />
+
+          <div className="space-y-8">
+            <h3 className="text-xl font-semibold text-white mb-3">
+              Emotion-Driven Intelligence.
+            </h3>
+            <p className="text-zinc-400">
+              Homant recognizes your emotional state and adapts your
+              surroundings to support your wellbeing—whether you need focus,
+              relaxation, or motivation
+            </p>
           </div>
-          <h3 className="text-xl font-semibold text-white mb-3">
-            Intelligent Routines
-          </h3>
-          <p className="text-zinc-400">
-            Homant learns your habits and optimizes your daily routines to save
-            time and reduce stress.
-          </p>
         </div>
       </div>
     </div>
@@ -707,7 +686,7 @@ const Footer = () => (
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-white">
+    <div className="min-h-screen bg-[#0A0A0A] text-white font-mono">
       <Header />
       <main>
         <Hero />
