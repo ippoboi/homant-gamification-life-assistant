@@ -12,12 +12,8 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useApi } from "@/hooks/use-api";
-import authApi, { SignInDto, AuthResponse } from "@/api/auth-api";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { ACCESS_TOKEN_KEY, USER_KEY } from "@/context/auth-provider";
-import Cookies from "js-cookie";
+import { useAuth } from "@/context/auth-provider";
+import { SignInDto } from "@/api/auth-api";
 
 export function SigninForm({
   className,
@@ -25,30 +21,7 @@ export function SigninForm({
 }: React.ComponentProps<"div">) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const router = useRouter();
-
-  // Using useApi hook for login
-  const loginApi = useApi<AuthResponse>({
-    context: "Login",
-    showErrorToast: true,
-    onSuccess: (data) => {
-      // Set token in both localStorage and cookie
-      localStorage.setItem(ACCESS_TOKEN_KEY, data.access_token);
-      Cookies.set(ACCESS_TOKEN_KEY, data.access_token, {
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-        path: "/",
-        expires: 7, // 7 days
-      });
-
-      if (data.user) {
-        localStorage.setItem(USER_KEY, JSON.stringify(data.user));
-      }
-
-      toast.success("Logged in successfully!");
-      router.push("/dashboard");
-    },
-  });
+  const { login, error, isLoading } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,8 +35,9 @@ export function SigninForm({
       password,
     };
 
-    // Submit login request
-    await loginApi.execute(() => authApi.signIn(credentials));
+    // Use auth provider's login function
+    await login(credentials);
+    // The auth provider will handle redirection to dashboard
   };
 
   return (
@@ -108,19 +82,15 @@ export function SigninForm({
                 />
               </div>
 
-              {loginApi.error && (
+              {error && (
                 <div className="p-3 text-sm text-red-500 bg-red-50 rounded-md dark:bg-red-900/20 dark:text-red-300">
-                  {loginApi.error.message}
+                  {error}
                 </div>
               )}
 
               <div className="flex flex-col gap-3">
-                <Button
-                  type="submit"
-                  className="w-full"
-                  disabled={loginApi.isLoading}
-                >
-                  {loginApi.isLoading ? "Logging in..." : "Login"}
+                <Button type="submit" className="w-full" disabled={isLoading}>
+                  {isLoading ? "Logging in..." : "Login"}
                 </Button>
                 <Button variant="outline" className="w-full">
                   Login with Google
@@ -129,7 +99,7 @@ export function SigninForm({
             </div>
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{" "}
-              <a href="/register" className="underline underline-offset-4">
+              <a href="/auth/signup" className="underline underline-offset-4">
                 Sign up
               </a>
             </div>
